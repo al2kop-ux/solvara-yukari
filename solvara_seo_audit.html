@@ -1,0 +1,1650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Solvara SEO Audit — 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1612;
+    --paper: #f7f3ee;
+    --warm-mid: #e8dfd4;
+    --gold: #c8a96e;
+    --gold-dark: #a07840;
+    --rust: #c45c2e;
+    --sage: #5a7a5c;
+    --sage-light: #e8f0e8;
+    --amber: #d4843c;
+    --critical: #c0392b;
+    --critical-bg: #fdf0ee;
+    --warning: #d4843c;
+    --warning-bg: #fdf5ee;
+    --good: #5a7a5c;
+    --good-bg: #eef4ee;
+    --border: #d4c8bc;
+    --text-muted: #7a6e64;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    line-height: 1.65;
+  }
+
+  /* ── COVER ── */
+  .cover {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 80px 60px 60px;
+    position: relative;
+    overflow: hidden;
+  }
+  .cover::before {
+    content: '';
+    position: absolute;
+    top: -120px; right: -120px;
+    width: 500px; height: 500px;
+    border-radius: 50%;
+    border: 1px solid rgba(200,169,110,0.15);
+  }
+  .cover::after {
+    content: '';
+    position: absolute;
+    bottom: -80px; left: 40px;
+    width: 300px; height: 300px;
+    border-radius: 50%;
+    border: 1px solid rgba(200,169,110,0.1);
+  }
+  .cover-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 28px;
+  }
+  .cover h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 56px;
+    font-weight: 900;
+    line-height: 1.1;
+    margin-bottom: 8px;
+  }
+  .cover h1 em { color: var(--gold); font-style: italic; }
+  .cover-sub {
+    font-size: 18px;
+    color: rgba(247,243,238,0.6);
+    margin-top: 12px;
+    margin-bottom: 48px;
+  }
+  .cover-meta {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    border-top: 1px solid rgba(200,169,110,0.25);
+    padding-top: 32px;
+  }
+  .cover-meta-item label {
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold);
+    display: block;
+    margin-bottom: 4px;
+  }
+  .cover-meta-item span {
+    font-size: 14px;
+    color: var(--paper);
+  }
+
+  /* ── SCORE DASHBOARD ── */
+  .score-dashboard {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 0 60px 60px;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 20px;
+  }
+  .score-card {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(200,169,110,0.2);
+    border-radius: 12px;
+    padding: 24px 20px;
+    text-align: center;
+  }
+  .score-card .score-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 48px;
+    font-weight: 900;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .score-card .score-num.red { color: #e05c4e; }
+  .score-card .score-num.amber { color: var(--amber); }
+  .score-card .score-num.green { color: #7aba7c; }
+  .score-card .score-label {
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: rgba(247,243,238,0.5);
+  }
+  .score-card .score-badge {
+    display: inline-block;
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 20px;
+    margin-top: 6px;
+    font-weight: 600;
+  }
+  .badge-critical { background: #c0392b22; color: #e05c4e; border: 1px solid #c0392b44; }
+  .badge-medium { background: #d4843c22; color: var(--amber); border: 1px solid #d4843c44; }
+  .badge-good { background: #5a7a5c22; color: #7aba7c; border: 1px solid #5a7a5c44; }
+
+  /* ── LAYOUT ── */
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 60px; }
+
+  .section {
+    padding: 60px 60px;
+    border-bottom: 1px solid var(--border);
+  }
+  .section:last-child { border-bottom: none; }
+
+  .section-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    margin-bottom: 36px;
+  }
+  .section-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--gold);
+    letter-spacing: 2px;
+    margin-top: 4px;
+    min-width: 40px;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 1.15;
+  }
+  .section-title em { color: var(--gold); font-style: italic; }
+  .section-intro {
+    font-size: 15px;
+    color: var(--text-muted);
+    max-width: 700px;
+    margin-bottom: 32px;
+    line-height: 1.7;
+  }
+
+  /* ── FINDINGS ── */
+  .findings { display: flex; flex-direction: column; gap: 16px; }
+
+  .finding {
+    border-radius: 12px;
+    border: 1px solid transparent;
+    overflow: hidden;
+  }
+  .finding.critical { background: var(--critical-bg); border-color: #e8c4be; }
+  .finding.warning { background: var(--warning-bg); border-color: #e8d4be; }
+  .finding.good { background: var(--good-bg); border-color: #bee8be; }
+
+  .finding-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 20px;
+  }
+  .finding-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .critical .finding-dot { background: var(--critical); }
+  .warning .finding-dot { background: var(--warning); }
+  .good .finding-dot { background: var(--good); }
+
+  .finding-title {
+    font-weight: 600;
+    font-size: 14px;
+    flex: 1;
+  }
+  .finding-priority {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-weight: 500;
+  }
+  .critical .finding-priority { background: #c0392b22; color: var(--critical); }
+  .warning .finding-priority { background: #d4843c22; color: var(--warning); }
+  .good .finding-priority { background: #5a7a5c22; color: var(--good); }
+
+  .finding-body {
+    padding: 0 20px 18px 40px;
+    font-size: 13.5px;
+    color: var(--ink);
+    line-height: 1.7;
+  }
+  .finding-body p { margin-bottom: 8px; }
+  .finding-body .rec {
+    margin-top: 10px;
+    padding: 10px 14px;
+    background: rgba(255,255,255,0.7);
+    border-radius: 8px;
+    border-left: 3px solid var(--gold);
+    font-size: 13px;
+  }
+  .finding-body .rec strong { display: block; margin-bottom: 3px; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: var(--gold-dark); }
+
+  code {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    background: rgba(0,0,0,0.06);
+    padding: 1px 5px;
+    border-radius: 4px;
+  }
+
+  /* ── TABLES ── */
+  .table-wrap { overflow-x: auto; margin: 24px 0; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  thead th {
+    background: var(--ink);
+    color: var(--paper);
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 10px 14px;
+    text-align: left;
+    white-space: nowrap;
+  }
+  tbody tr { border-bottom: 1px solid var(--border); }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover { background: rgba(200,169,110,0.06); }
+  td { padding: 10px 14px; vertical-align: top; }
+  td.num { font-family: 'DM Mono', monospace; font-size: 12px; }
+  .pill {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .pill-high { background: #c0392b18; color: #c0392b; border: 1px solid #c0392b33; }
+  .pill-med { background: #d4843c18; color: #b06820; border: 1px solid #d4843c33; }
+  .pill-low { background: #5a7a5c18; color: #3a6a3c; border: 1px solid #5a7a5c33; }
+  .pill-info { background: #3a6a8c18; color: #1a5070; border: 1px solid #3a6a8c33; }
+  .pill-transact { background: #6a3a8c18; color: #4a1a6c; border: 1px solid #6a3a8c33; }
+  .pill-inform { background: #3a8c6a18; color: #1a6c4a; border: 1px solid #3a8c6a33; }
+  .pill-product { background: #c8a96e18; color: #806030; border: 1px solid #c8a96e33; }
+
+  /* ── KEYWORD GRID ── */
+  .kw-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin: 24px 0; }
+  .kw-block {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .kw-block-header {
+    padding: 14px 18px;
+    background: var(--warm-mid);
+    font-weight: 600;
+    font-size: 13px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .kw-block-header .tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1px;
+    color: var(--text-muted);
+  }
+  .kw-row {
+    display: grid;
+    grid-template-columns: 1fr 80px 60px 60px;
+    gap: 8px;
+    padding: 9px 18px;
+    border-bottom: 1px solid var(--border);
+    font-size: 12.5px;
+    align-items: center;
+  }
+  .kw-row:last-child { border-bottom: none; }
+  .kw-row .kw-name { font-weight: 500; }
+  .kw-row .kw-vol { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--text-muted); }
+  .kw-row .kw-diff { font-family: 'DM Mono', monospace; font-size: 11px; }
+  .diff-low { color: var(--good); }
+  .diff-med { color: var(--warning); }
+  .diff-high { color: var(--critical); }
+
+  /* ── CRO WIREFRAME ── */
+  .cro-section { margin: 28px 0; }
+  .cro-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 12px;
+  }
+  .wireframe {
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    font-size: 12px;
+    background: white;
+  }
+  .wf-navbar {
+    background: #1a1612;
+    color: white;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 11px;
+  }
+  .wf-logo { font-family: 'Playfair Display', serif; font-size: 16px; color: #c8a96e; }
+  .wf-nav { display: flex; gap: 16px; font-size: 11px; opacity: 0.7; }
+  .wf-cta-nav { background: #c8a96e; color: #1a1612; padding: 6px 14px; border-radius: 4px; font-weight: 600; font-size: 11px; }
+
+  .wf-hero {
+    background: linear-gradient(135deg, #1a1612 0%, #2e2520 100%);
+    color: white;
+    padding: 48px 40px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: center;
+  }
+  .wf-hero-text h2 { font-family: 'Playfair Display', serif; font-size: 28px; color: #f7f3ee; margin-bottom: 12px; line-height: 1.2; }
+  .wf-hero-text p { font-size: 13px; color: rgba(247,243,238,0.65); margin-bottom: 20px; }
+  .wf-hero-btns { display: flex; gap: 10px; }
+  .wf-btn-primary { background: #c8a96e; color: #1a1612; padding: 11px 22px; border-radius: 6px; font-weight: 700; font-size: 13px; }
+  .wf-btn-secondary { border: 1px solid rgba(200,169,110,0.5); color: #c8a96e; padding: 11px 22px; border-radius: 6px; font-size: 13px; }
+  .wf-hero-trust { margin-top: 20px; display: flex; gap: 16px; }
+  .wf-trust-item { font-size: 10px; color: rgba(247,243,238,0.5); display: flex; align-items: center; gap: 5px; }
+  .wf-trust-icon { color: #c8a96e; font-size: 13px; }
+  .wf-hero-img { background: rgba(255,255,255,0.05); border: 1px solid rgba(200,169,110,0.2); border-radius: 12px; aspect-ratio: 1; display: flex; align-items: center; justify-content: center; color: rgba(247,243,238,0.3); font-size: 11px; }
+
+  .wf-strip {
+    background: #c8a96e;
+    color: #1a1612;
+    padding: 10px 40px;
+    display: flex;
+    gap: 40px;
+    font-size: 11px;
+    font-weight: 600;
+    justify-content: center;
+  }
+  .wf-strip span::before { content: '✓ '; }
+
+  .wf-products {
+    padding: 40px;
+    background: #f7f3ee;
+  }
+  .wf-section-title { font-family: 'Playfair Display', serif; font-size: 20px; margin-bottom: 6px; }
+  .wf-section-sub { font-size: 12px; color: var(--text-muted); margin-bottom: 24px; }
+  .wf-product-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .wf-product-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .wf-product-img { background: var(--warm-mid); aspect-ratio: 1; display: flex; align-items: center; justify-content: center; font-size: 10px; color: var(--text-muted); }
+  .wf-product-body { padding: 12px; }
+  .wf-product-name { font-weight: 600; font-size: 12px; margin-bottom: 3px; }
+  .wf-product-price { font-size: 13px; font-weight: 700; color: var(--ink); margin-bottom: 6px; }
+  .wf-product-rating { font-size: 10px; color: var(--gold); margin-bottom: 8px; }
+  .wf-add-btn { background: var(--ink); color: white; padding: 7px 12px; border-radius: 5px; font-size: 11px; font-weight: 600; width: 100%; text-align: center; }
+
+  .wf-annotation {
+    display: flex;
+    gap: 6px;
+    align-items: flex-start;
+    margin: 4px 0;
+    font-size: 11px;
+    color: var(--critical);
+    background: var(--critical-bg);
+    padding: 6px 10px;
+    border-radius: 6px;
+    border-left: 3px solid var(--critical);
+  }
+  .wf-annotation.green { color: var(--good); background: var(--good-bg); border-color: var(--good); }
+  .wf-annotation .arrow { font-size: 14px; }
+
+  /* ── PRODUCT PAGE WIREFRAME ── */
+  .wf-pdp {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    background: white;
+  }
+  .wf-pdp-images { padding: 32px; background: var(--warm-mid); }
+  .wf-pdp-main-img { background: var(--border); border-radius: 10px; aspect-ratio: 1; display: flex; align-items: center; justify-content: center; font-size: 10px; color: var(--text-muted); margin-bottom: 10px; }
+  .wf-pdp-thumbs { display: flex; gap: 8px; }
+  .wf-pdp-thumb { background: white; border: 1px solid var(--border); border-radius: 6px; width: 50px; height: 50px; flex-shrink: 0; }
+
+  .wf-pdp-info { padding: 32px; }
+  .wf-pdp-breadcrumb { font-size: 10px; color: var(--text-muted); margin-bottom: 12px; }
+  .wf-pdp-badge { display: inline-block; background: #c8a96e18; color: var(--gold-dark); border: 1px solid var(--gold); padding: 3px 10px; border-radius: 20px; font-size: 10px; font-weight: 600; margin-bottom: 10px; }
+  .wf-pdp-h1 { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; margin-bottom: 6px; line-height: 1.2; }
+  .wf-pdp-rating { font-size: 11px; color: var(--gold); margin-bottom: 10px; }
+  .wf-pdp-rating span { color: var(--text-muted); }
+  .wf-pdp-price { font-size: 24px; font-weight: 700; margin-bottom: 4px; }
+  .wf-pdp-save { font-size: 11px; color: var(--good); font-weight: 600; margin-bottom: 16px; }
+  .wf-pdp-variants { display: flex; gap: 8px; margin-bottom: 16px; }
+  .wf-variant { border: 1px solid var(--border); border-radius: 6px; padding: 6px 10px; font-size: 11px; cursor: pointer; }
+  .wf-variant.active { border-color: var(--ink); background: var(--ink); color: white; }
+  .wf-pdp-cta { background: #c8a96e; color: #1a1612; padding: 14px; border-radius: 8px; font-weight: 700; font-size: 14px; text-align: center; margin-bottom: 10px; }
+  .wf-pdp-secondary { border: 2px solid var(--ink); padding: 12px; border-radius: 8px; font-weight: 600; font-size: 13px; text-align: center; margin-bottom: 16px; }
+  .wf-pdp-guarantee { background: var(--good-bg); border: 1px solid #bee8be; border-radius: 8px; padding: 10px 14px; font-size: 11px; color: var(--good); margin-bottom: 14px; font-weight: 600; }
+  .wf-pdp-trust { display: flex; gap: 16px; font-size: 10px; color: var(--text-muted); }
+
+  /* ── GAP PAGES ── */
+  .gap-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 24px 0; }
+  .gap-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px 20px;
+  }
+  .gap-card-type {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .gap-card-type.product { color: var(--gold-dark); }
+  .gap-card-type.blog { color: var(--sage); }
+  .gap-card h4 { font-size: 14px; font-weight: 600; margin-bottom: 8px; line-height: 1.3; }
+  .gap-card .url { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--text-muted); margin-bottom: 10px; }
+  .gap-card .kws { display: flex; flex-wrap: wrap; gap: 6px; }
+  .kw-tag { font-size: 11px; background: var(--warm-mid); padding: 3px 8px; border-radius: 12px; color: var(--ink); }
+  .vol-tag { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--text-muted); }
+
+  /* ── DIVIDER ── */
+  .divider { height: 1px; background: var(--border); margin: 40px 0; }
+
+  /* ── COMPETITOR TABLE ── */
+  .comp-bar { height: 6px; background: var(--border); border-radius: 3px; margin-top: 4px; }
+  .comp-bar-fill { height: 100%; border-radius: 3px; background: var(--gold); }
+
+  /* ── BACKLINK STATUS ── */
+  .backlink-summary {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin: 24px 0;
+  }
+  .bl-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+  }
+  .bl-card .bl-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 36px;
+    font-weight: 900;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .bl-card .bl-label {
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 0.5px;
+  }
+
+  /* ── PAGE MAPPING ── */
+  .page-map { display: flex; flex-direction: column; gap: 12px; margin: 24px 0; }
+  .page-row {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 20px;
+    display: grid;
+    grid-template-columns: 200px 1fr 160px 120px;
+    gap: 16px;
+    align-items: start;
+    font-size: 13px;
+  }
+  .page-row-url { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--text-muted); word-break: break-all; }
+  .page-row-kws { display: flex; flex-wrap: wrap; gap: 5px; }
+  .page-row-issue { font-size: 12px; }
+  .page-row-pri { text-align: right; }
+
+  /* ── PRIORITY TABLE ── */
+  .priority-list { display: flex; flex-direction: column; gap: 10px; margin: 24px 0; }
+  .priority-item {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 18px;
+  }
+  .priority-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    font-weight: 900;
+    color: var(--gold);
+    min-width: 36px;
+    line-height: 1;
+  }
+  .priority-content h4 { font-size: 14px; font-weight: 600; margin-bottom: 3px; }
+  .priority-content p { font-size: 12.5px; color: var(--text-muted); }
+  .priority-impact {
+    margin-left: auto;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1px;
+    padding: 4px 10px;
+    border-radius: 20px;
+  }
+  .impact-high { background: #c0392b15; color: var(--critical); border: 1px solid #c0392b30; }
+  .impact-med { background: #d4843c15; color: var(--warning); border: 1px solid #d4843c30; }
+
+  @media print {
+    .section { page-break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════ COVER ══════════════════════ -->
+<div class="cover">
+  <div class="cover-label">DataForSEO — Powered Audit Report</div>
+  <h1>Solvara<br><em>SEO Audit</em></h1>
+  <div class="cover-sub">solvara.co.uk — Ayurvedic Botanicals & Supplements</div>
+  <div class="cover-meta">
+    <div class="cover-meta-item"><label>Date</label><span>March 2026</span></div>
+    <div class="cover-meta-item"><label>Market</label><span>United Kingdom</span></div>
+    <div class="cover-meta-item"><label>Platform</label><span>Shopify</span></div>
+    <div class="cover-meta-item"><label>Stage</label><span>Early-stage / New site</span></div>
+  </div>
+</div>
+
+<!-- ══════════════════════ SCORE DASHBOARD ══════════════════════ -->
+<div class="score-dashboard">
+  <div class="score-card">
+    <div class="score-num amber">96</div>
+    <div class="score-label">Performance</div>
+    <div class="score-badge badge-good">Desktop / Good</div>
+  </div>
+  <div class="score-card">
+    <div class="score-num amber">92</div>
+    <div class="score-label">Lighthouse SEO</div>
+    <div class="score-badge badge-medium">Minor Gaps</div>
+  </div>
+  <div class="score-card">
+    <div class="score-num red">69</div>
+    <div class="score-label">Best Practices</div>
+    <div class="score-badge badge-critical">Needs Fix</div>
+  </div>
+  <div class="score-card">
+    <div class="score-num red">0</div>
+    <div class="score-label">Organic Rankings</div>
+    <div class="score-badge badge-critical">Not Ranking</div>
+  </div>
+  <div class="score-card">
+    <div class="score-num red">0</div>
+    <div class="score-label">Referring Domains</div>
+    <div class="score-badge badge-critical">No Backlinks</div>
+  </div>
+</div>
+
+<!-- ══════════════════════ 1. TECHNICAL SEO ══════════════════════ -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-num">01</div>
+    <div>
+      <div class="section-title">Technical <em>SEO</em></div>
+    </div>
+  </div>
+  <p class="section-intro">Lighthouse was run against both the homepage and the flagship Shilajit product page. The site is technically healthy from a speed perspective (desktop) but several structural and best-practice issues need addressing before Google can effectively crawl and trust the site.</p>
+
+  <div class="findings">
+
+    <div class="finding critical">
+      <div class="finding-header">
+        <div class="finding-dot"></div>
+        <div class="finding-title">No Organic Rankings Detected — Brand-New Domain with Zero Authority</div>
+        <div class="finding-priority">CRITICAL</div>
+      </div>
+      <div class="finding-body">
+        <p>DataForSEO Labs returned zero ranked keywords for <code>solvara.co.uk</code> in the UK. This confirms the site has not yet earned organic visibility for any query. The domain is brand-new and Google has yet to index/rank product pages.</p>
+        <div class="rec">
+          <strong>Action</strong>
+          Submit the sitemap immediately via Google Search Console. Ensure all product pages are indexable. Begin link acquisition (see Off-Page section). This is the single biggest growth lever.
+        </div>
+      </div>
+    </div>
+
+    <div class="finding critical">
+      <div class="finding-header">
+        <div class="finding-dot"></div>
+        <div class="finding-title">Lighthouse Best Practices Score: 69/100 — Third-Party Cookies & Security Headers</div>
+        <div class="finding-priority">CRITICAL</div>
+      </div>
+      <div class="finding-body">
+        <p>The Best Practices score of 69 (homepage) and 73 (product page) indicates issues with third-party scripts — most likely Shopify's <code>shop.app</code> widget and payment processor scripts setting insecure cookies or lacking HTTPS-only headers. Google uses Best Practices signals as tie-breakers.</p>
+        <div class="rec">
+          <strong>Action</strong>
+          Audit third-party scripts in Shopify settings. Remove or defer non-essential apps. Add Content-Security-Policy and X-Frame-Options headers via a Cloudflare proxy or Shopify custom liquid. Review <code>shop.app</code> inclusion — it's adding 16MB+ to homepage payload.
+        </div>
+      </div>
+    </div>
+
+    <div class="finding critical">
+      <div class="finding-header">
+        <div class="finding-dot"></div>
+        <div class="finding-title">Homepage Total Byte Weight: 16.9 MB — Severely Over-bloated</div>
+        <div class="finding-priority">CRITICAL</div>
+      </div>
+      <div class="finding-body">
+        <p>Lighthouse reports a total page weight of <strong>16,896,981 bytes (~16.9 MB)</strong> on the homepage. This is extremely high and strongly indicates an unoptimised hero video. The product page is a much healthier 2.1 MB. On mobile connections this homepage would be unusable.</p>
+        <div class="rec">
+          <strong>Action</strong>
+          Convert the hero video to a compressed WebM/MP4 under 3 MB. Use <code>loading="lazy"</code> for below-fold images. Consider replacing the video with a high-quality static image on mobile via Shopify's responsive section settings. Target total page weight under 3 MB.
+        </div>
+      </div>
+    </div>
+
+    <div class="finding warning">
+      <div class="finding-header">
+        <div class="finding-dot"></div>
+        <div class="finding-title">Main-thread Work: 2,658ms on Product Pages — JS Execution Bottleneck</div>
+        <div class="finding-priority">MEDIUM</div>
+      </div>
+      <div class="finding-body">
+        <p>While LCP (1.3s) and TTI (1.3s) are acceptable on desktop, the product page main-thread work of 2,658ms will cause real performance problems on mobile devices. The <code>unused-javascript</code> score (80ms flagged) suggests bloated Shopify theme scripts.</p>
+        <div class="rec">
+          <strong>Action</strong>
+          Audit installed Shopify apps — each app adds JS. Remove unused apps. Defer non-critical scripts using <code>defer</code> and <code>async</code> attributes. Consider moving to a performance-optimised theme like Dawn or a headless setup long-term.
+        </div>
+      </div>
+    </div>
+
+    <div class="finding warning">
+      <div class="finding-header">
+        <div class="finding-dot"></div>
+        <div class="finding-title">No Collections Page / Category Architecture — Missing SEO Landing Pages</div>
+        <div class="finding-priority">MEDIUM</div>
+      </div>
+      <div class="finding-body">
+        <p>The site navigates directly from the homepage to individual product pages via a dropdown "Shop" menu. There are no collections pages (e.g., <code>/collections/ayurvedic-supplements</code>, <code>/collections/adaptogens</code>) to target category-level keywords. This is a significant structural gap for a supplement brand.</p>
+        <div class="rec">
+          <strong>Action</strong>
+          Create Shopify Collections for: "Ayurvedic Supplements UK", "Adaptogen Powders", "Shilajit Products", "Women's Health Supplements". These pages can rank for high-volume commercial terms that individual product pages cannot.
+        </div>
+      </div>
+    </div>
+
+    <div class="finding warning">
+      <div class="finding-header">
+        <div class="finding-dot"></div>
+        <div class="finding-title">No Blog / Content Hub — Zero Informational Traffic Pathway</div>
+        <div class="finding-priority">MEDIUM</div>
+      </div>
+      <div class="finding-body">
+        <p>There is no blog or articles section. In the supplements/wellness space, informational content (e.g., "shilajit benefits", "ashwagandha for stress", 27K–165K monthly searches) is a primary organic traffic driver and builds topical authority that lifts product page rankings.</p>
+        <div class="rec">
+          <strong>Action</strong>
+          Enable Shopify Blog. Create a "Wellness Journal" or "The Solvara Edit" content hub. Prioritise 6–8 pillar articles targeting high-volume informational keywords (see Keyword Mapping section).
+        </div>
+      </div>
+    </div>
+
+    <div class="finding warning">
+      <div class="finding-header">
+        <div class="finding-dot"></div>
+        <div class="finding-title">No Schema Markup Detected — Missing Product, Review & FAQ Rich Results</div>
+        <div class="finding-priority">MEDIUM</div>
+      </div>
+      <div class="finding-body">
+        <p>No structured data (JSON-LD) was found on product pages. Shopify's default theme sometimes outputs basic Product schema, but it's not confirmed here. Missing: <code>Product</code> schema with <code>AggregateRating</code>, <code>FAQPage</code> schema, and <code>BreadcrumbList</code>. Rich snippets (star ratings in SERPs) significantly improve CTR.</p>
+        <div class="rec">
+          <strong>Action</strong>
+          Install a Shopify Schema app (e.g., SEO King, Yotpo) or manually add JSON-LD blocks in product page liquid templates. Prioritise Product + Review schema first, then FAQ schema using the product Q&A content already on pages.
+        </div>
+      </div>
+    </div>
+
+    <div class="finding good">
+      <div class="finding-header">
+        <div class="finding-dot"></div>
+        <div class="finding-title">Core Web Vitals: Excellent on Desktop (LCP 1.0s homepage, 1.3s product page)</div>
+        <div class="finding-priority">GOOD</div>
+      </div>
+      <div class="finding-body">
+        <p>LCP (Largest Contentful Paint): 1.01s homepage / 1.34s product page. CLS (Cumulative Layout Shift): 0 / 0.003. FID proxy (Max Potential FID): 24ms / 23ms. All well within Google's "Good" thresholds on desktop. Server response time is fast at 22ms (homepage).</p>
+      </div>
+    </div>
+
+    <div class="finding good">
+      <div class="finding-header">
+        <div class="finding-dot"></div>
+        <div class="finding-title">HTTPS, Shopify CDN, and Clean URL Structure in Place</div>
+        <div class="finding-priority">GOOD</div>
+      </div>
+      <div class="finding-body">
+        <p>The site uses HTTPS throughout, Shopify's global CDN for assets, and has clean URL slugs (<code>/products/pure-shilajit-resin</code>, <code>/products/ashwagandha-root-powder</code>). No redirect chains detected on crawled pages.</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════ 2. ON-PAGE SEO ══════════════════════ -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-num">02</div>
+    <div>
+      <div class="section-title">On-Page <em>SEO</em></div>
+    </div>
+  </div>
+  <p class="section-intro">Analysis of meta titles, H1s, URL slugs, and on-page copy across all key pages. The site has good product descriptions but is missing geo-modified, search-intent-driven SEO metadata throughout.</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Page</th>
+          <th>URL Slug</th>
+          <th>Current Title Tag</th>
+          <th>H1</th>
+          <th>Issues</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Homepage</strong></td>
+          <td><code>/</code></td>
+          <td>Solvara | Refined by Nature, Elevated by Purity</td>
+          <td><em>None — no H1 on homepage</em></td>
+          <td><span class="pill pill-high">Missing H1</span> <span class="pill pill-high">No target keyword in title</span></td>
+        </tr>
+        <tr>
+          <td><strong>Shilajit Resin</strong></td>
+          <td><code>/products/pure-shilajit-resin</code></td>
+          <td>Pure Shilajit Resin – Solvara</td>
+          <td>Pure Shilajit Resin</td>
+          <td><span class="pill pill-med">No "UK" geo-modifier</span> <span class="pill pill-med">Title too short (28 chars)</span></td>
+        </tr>
+        <tr>
+          <td><strong>Ashwagandha</strong></td>
+          <td><code>/products/ashwagandha-root-powder</code></td>
+          <td>Ashwagandha Root Powder – Solvara</td>
+          <td>Ashwagandha Root Powder</td>
+          <td><span class="pill pill-med">No "UK" geo-modifier</span> <span class="pill pill-med">Title too short</span></td>
+        </tr>
+        <tr>
+          <td><strong>Moringa</strong></td>
+          <td><code>/products/moringa-leaf-powder</code></td>
+          <td>Moringa Leaf Powder – Solvara</td>
+          <td>Moringa Leaf Powder</td>
+          <td><span class="pill pill-med">No "UK" geo-modifier</span> <span class="pill pill-low">URL says "leaf", H1 matches ✓</span></td>
+        </tr>
+        <tr>
+          <td><strong>Shatavari</strong></td>
+          <td><code>/products/shatavari-root-powder</code></td>
+          <td>Shatavari Root Powder – Solvara</td>
+          <td>Shatavari Root Powder</td>
+          <td><span class="pill pill-med">No "UK" geo-modifier</span></td>
+        </tr>
+        <tr>
+          <td><strong>Copper Mug</strong></td>
+          <td><code>/products/ayurvedic-copper-mug</code></td>
+          <td>Ayurvedic Copper Mug – Solvara</td>
+          <td>Ayurvedic Copper Mug</td>
+          <td><span class="pill pill-low">Good keyword in URL ✓</span></td>
+        </tr>
+        <tr>
+          <td><strong>Our Story</strong></td>
+          <td><code>/pages/our-story</code></td>
+          <td><em>Unknown</em></td>
+          <td><em>Unknown</em></td>
+          <td><span class="pill pill-low">No SEO value page — acceptable</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="findings" style="margin-top:28px;">
+
+    <div class="finding critical">
+      <div class="finding-header">
+        <div class="finding-dot"></div>
+        <div class="finding-title">Homepage Has No H1 Tag</div>
+        <div class="finding-priority">CRITICAL</div>
+      </div>
+      <div class="finding-body">
+        <p>The homepage HTML contains no <code>&lt;h1&gt;</code> element. The brand tagline "At Solvara, we don't just source botanicals" is rendered as an <code>&lt;h2&gt;</code>. An H1 is a critical on-page signal for Google to understand the page's primary topic.</p>
+        <div class="rec">
+          <strong>Recommended H1</strong>
+          "Ayurvedic Supplements & Botanicals | UK" — or a variant that leads with the brand's hero product category and includes the UK market identifier.
+        </div>
+      </div>
+    </div>
+
+    <div class="finding critical">
+      <div class="finding-header">
+        <div class="finding-dot"></div>
+        <div class="finding-title">Homepage Title Tag Contains Zero Search Keywords</div>
+        <div class="finding-priority">CRITICAL</div>
+      </div>
+      <div class="finding-body">
+        <p>The current title "Solvara | Refined by Nature, Elevated by Purity" is a brand tagline, not an SEO title. It contains no searchable terms. Google rewrites titles it deems uninformative, often replacing them with H1 or body text — which in this case is also not keyword-rich.</p>
+        <div class="rec">
+          <strong>Recommended Title</strong>
+          "Solvara | Pure Ayurvedic Supplements &amp; Shilajit Resin — UK" (55 chars). This leads with brand, contains primary category keyword, flagship product, and geo-modifier.
+        </div>
+      </div>
+    </div>
+
+    <div class="finding warning">
+      <div class="finding-header">
+        <div class="finding-dot"></div>
+        <div class="finding-title">All Product Title Tags Are Missing UK Geo-Modifier and Benefit-Driven Language</div>
+        <div class="finding-priority">MEDIUM</div>
+      </div>
+      <div class="finding-body">
+        <p>For a UK-focused brand competing against Amazon, Holland & Barrett, and rawliving.co.uk, the geo-modifier "UK" in title tags is a meaningful differentiator in SERPs. Titles like "Pure Shilajit Resin – Solvara" are too short (28 chars vs ideal 55–60) and lack conversion-intent language.</p>
+        <div class="rec">
+          <strong>Recommended Titles</strong><br>
+          Shilajit: "Pure Himalayan Shilajit Resin UK | 80% Fulvic Acid — Solvara" (62 chars)<br>
+          Ashwagandha: "Organic Ashwagandha Root Powder UK | Stress & Energy — Solvara" (63 chars)<br>
+          Moringa: "Moringa Leaf Powder UK | Pure Organic Botanical — Solvara" (57 chars)
+        </div>
+      </div>
+    </div>
+
+    <div class="finding warning">
+      <div class="finding-header">
+        <div class="finding-dot"></div>
+        <div class="finding-title">No Meta Descriptions Set on Product Pages</div>
+        <div class="finding-priority">MEDIUM</div>
+      </div>
+      <div class="finding-body">
+        <p>Meta descriptions are not a ranking factor but directly impact CTR. Google will auto-generate them from page copy if not set — often pulling sub-optimal snippets. In a competitive supplement SERP, a compelling meta description can be the difference between a click and a scroll-past.</p>
+        <div class="rec">
+          <strong>Example for Shilajit page</strong>
+          "Sourced at 18,000ft in the Himalayas. Our premium Gold Grade Shilajit Resin contains 80% Fulvic Acid & 85+ trace minerals. Lab-tested. Free UK delivery over £59.99." (160 chars)
+        </div>
+      </div>
+    </div>
+
+    <div class="finding warning">
+      <div class="finding-header">
+        <div class="finding-dot"></div>
+        <div class="finding-title">"Need Help?" Accordion Section Contains Template Placeholder Text</div>
+        <div class="finding-priority">MEDIUM</div>
+      </div>
+      <div class="finding-body">
+        <p>Both the Shilajit and Ashwagandha product pages contain an accordion section labelled "Need Help?" with entries reading "Use this text to answer questions in as much detail as possible for your customers." This is unpublished placeholder copy and presents an unprofessional experience. More importantly, this section is an ideal location for keyword-rich FAQ content that can earn <strong>FAQ rich results</strong> in Google.</p>
+        <div class="rec">
+          <strong>Action</strong>
+          Replace all four accordion items with real, keyword-rich FAQs per product. Example for Shilajit: "How do I use Shilajit Resin?", "What is the difference between Shilajit resin and powder?", "Is Shilajit legal in the UK?", "How long until I see results?". These also answer high-intent Google searches.
+        </div>
+      </div>
+    </div>
+
+    <div class="finding good">
+      <div class="finding-header">
+        <div class="finding-dot"></div>
+        <div class="finding-title">URL Slugs Are Clean, Descriptive, and Keyword-Appropriate</div>
+        <div class="finding-priority">GOOD</div>
+      </div>
+      <div class="finding-body">
+        <p>All product URL slugs are clean and contain the primary product keyword: <code>/products/pure-shilajit-resin</code>, <code>/products/ashwagandha-root-powder</code>, etc. No query strings, no ID numbers — exactly right for SEO.</p>
+      </div>
+    </div>
+
+    <div class="finding good">
+      <div class="finding-header">
+        <div class="finding-dot"></div>
+        <div class="finding-title">Product Copy Is Detailed, Well-Structured, and Contains Naturally Relevant Keywords</div>
+        <div class="finding-priority">GOOD</div>
+      </div>
+      <div class="finding-body">
+        <p>The long-form product descriptions are genuinely excellent. The Shilajit page covers: sourcing, fulvic acid content, gold trace minerals, usage instructions, storage, allergens, and key benefits in well-formatted sections. This depth is a strong on-page SEO signal once the domain gains authority.</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════ 3. OFF-PAGE SEO ══════════════════════ -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-num">03</div>
+    <div>
+      <div class="section-title">Off-Page SEO & <em>Backlinks</em></div>
+    </div>
+  </div>
+  <p class="section-intro">The Backlinks API returned an access error (subscription tier), so we are using proxy signals from the SERP competitor data, keyword average backlink benchmarks, and direct analysis. The picture is clear: Solvara currently has effectively zero referring domains.</p>
+
+  <div class="backlink-summary">
+    <div class="bl-card">
+      <div class="bl-num" style="color: var(--critical);">~0</div>
+      <div class="bl-label">Estimated Referring Domains</div>
+    </div>
+    <div class="bl-card">
+      <div class="bl-num" style="color: var(--critical);">~0</div>
+      <div class="bl-label">Domain Authority / Rank</div>
+    </div>
+    <div class="bl-card">
+      <div class="bl-num" style="color: var(--warning);">14–25</div>
+      <div class="bl-label">Avg RDs needed to rank for "shilajit resin uk"</div>
+    </div>
+  </div>
+
+  <div class="findings">
+
+    <div class="finding critical">
+      <div class="finding-header">
+        <div class="finding-dot"></div>
+        <div class="finding-title">Zero Referring Domains — Highest-Priority Growth Lever</div>
+        <div class="finding-priority">CRITICAL</div>
+      </div>
+      <div class="finding-body">
+        <p>DataForSEO's SERP competitor data shows that even for the relatively low-competition keyword "shilajit resin uk" (260 monthly searches), the sites currently ranking pages 1–3 have between 3–15 referring domains on the specific ranking URL. To reach page 1 for Solvara's target keywords, a minimum of 10–30 quality referring domains needs to be built.</p>
+        <p>For context: the #1 ranking competitor rawliving.co.uk has a domain rating in the hundreds. Amazon and Holland & Barrett are near-impossible to displace for generic terms. The opportunity is long-tail + geo-modified terms where Solvara can win with 15–30 good backlinks.</p>
+        <div class="rec">
+          <strong>Immediate Action Plan</strong>
+          1. Digital PR: Pitch Solvara's Himalayan sourcing story to UK wellness publications (Healthline UK, Well+Good, Stylist, Grazia Health). A single high-DA editorial link from a publication like these can move rankings significantly.<br>
+          2. Influencer & UGC: TikTok presence already exists — convert social proof to do-follow links via review sites (Trustpilot, Google Business, Yotpo).<br>
+          3. Niche directories: Submit to UK supplement directories, Ayurvedic practitioner sites, and wellness marketplaces that allow brand profiles.<br>
+          4. Guest posts: Target UK health/wellness blogs with DR 30+ for guest articles around Ayurveda, shilajit, adaptogens.<br>
+          5. Lab certificate PR: The third-party lab testing angle is genuinely differentiated — pitch this to consumer watchdog sites and supplement review publications.
+        </div>
+      </div>
+    </div>
+
+    <div class="finding warning">
+      <div class="finding-header">
+        <div class="finding-dot"></div>
+        <div class="finding-title">Competitive Landscape: Amazon & Holland Barrett Dominate, But Niche Specialists Are Beatable</div>
+        <div class="finding-priority">MEDIUM</div>
+      </div>
+      <div class="finding-body">
+        <p>SERP competitor analysis for the keyword cluster [shilajit uk, buy shilajit uk, pure shilajit resin uk, ashwagandha powder uk, moringa powder uk]:</p>
+
+        <div class="table-wrap" style="margin-top:14px;">
+          <table>
+            <thead>
+              <tr><th>Domain</th><th>Avg Position</th><th>Visibility</th><th>Assessment</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>hollandandbarrett.com</td><td class="num">2.3</td><td class="num">3.5</td><td><span class="pill pill-high">Unbeatable (DA ~500)</span></td></tr>
+              <tr><td>amazon.co.uk</td><td class="num">2.0</td><td class="num">4.5</td><td><span class="pill pill-high">Unbeatable (DA 718)</span></td></tr>
+              <tr><td>rawliving.co.uk</td><td class="num">3.4</td><td class="num">3.8</td><td><span class="pill pill-med">Strong niche specialist — study their content strategy</span></td></tr>
+              <tr><td>weightworld.uk</td><td class="num">26.5</td><td class="num">1.3</td><td><span class="pill pill-low">Beatable with 20–30 RDs</span></td></tr>
+              <tr><td>authenticshilajit.co.uk</td><td class="num">11.7</td><td class="num">1.0</td><td><span class="pill pill-low">Beatable — niche-only competitor</span></td></tr>
+              <tr><td>edensgate.co.uk</td><td class="num">10.7</td><td class="num">0.55</td><td><span class="pill pill-low">Beatable — low authority</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="rec">
+          <strong>Strategy</strong>
+          Target the niche shilajit-specific keywords (260–720 searches/mo) where authenticshilajit.co.uk and edensgate.co.uk rank — these are beatable with quality content + 15–25 referring domains. Avoid chasing "shilajit uk" (#1 = Holland & Barrett) until authority is established.
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════ 4. KEYWORD MAPPING ══════════════════════ -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-num">04</div>
+    <div>
+      <div class="section-title">Keyword <em>Mapping</em></div>
+    </div>
+  </div>
+  <p class="section-intro">Based on DataForSEO keyword data for the UK market. Keywords are mapped to existing and recommended pages, differentiated between commercial/transactional (product pages) and informational (blog content).</p>
+
+  <div class="kw-grid">
+    <div class="kw-block">
+      <div class="kw-block-header">
+        🛍 Transactional — Product Pages
+        <span class="tag">COMMERCIAL INTENT</span>
+      </div>
+      <div class="kw-row" style="background:var(--warm-mid); font-weight:600; font-size:11px;">
+        <div>Keyword</div><div>Vol/Mo</div><div>Diff</div><div>Intent</div>
+      </div>
+      <div class="kw-row">
+        <div class="kw-name">shilajit uk</div>
+        <div class="kw-vol">6,600</div>
+        <div class="kw-diff diff-med">55</div>
+        <div><span class="pill pill-transact" style="font-size:9px;">BUY</span></div>
+      </div>
+      <div class="kw-row">
+        <div class="kw-name">best shilajit uk</div>
+        <div class="kw-vol">720</div>
+        <div class="kw-diff diff-low">—</div>
+        <div><span class="pill pill-transact" style="font-size:9px;">COMPARE</span></div>
+      </div>
+      <div class="kw-row">
+        <div class="kw-name">pure shilajit uk</div>
+        <div class="kw-vol">590</div>
+        <div class="kw-diff diff-low">—</div>
+        <div><span class="pill pill-transact" style="font-size:9px;">BUY</span></div>
+      </div>
+      <div class="kw-row">
+        <div class="kw-name">shilajit resin uk</div>
+        <div class="kw-vol">260</div>
+        <div class="kw-diff diff-low">—</div>
+        <div><span class="pill pill-transact" style="font-size:9px;">BUY</span></div>
+      </div>
+      <div class="kw-row">
+        <div class="kw-name">himalayan shilajit uk</div>
+        <div class="kw-vol">260</div>
+        <div class="kw-diff diff-low">—</div>
+        <div><span class="pill pill-transact" style="font-size:9px;">BUY</span></div>
+      </div>
+      <div class="kw-row">
+        <div class="kw-name">ashwagandha powder uk</div>
+        <div class="kw-vol">~1,000</div>
+        <div class="kw-diff diff-med">—</div>
+        <div><span class="pill pill-transact" style="font-size:9px;">BUY</span></div>
+      </div>
+      <div class="kw-row">
+        <div class="kw-name">moringa powder uk</div>
+        <div class="kw-vol">~800</div>
+        <div class="kw-diff diff-low">—</div>
+        <div><span class="pill pill-transact" style="font-size:9px;">BUY</span></div>
+      </div>
+      <div class="kw-row">
+        <div class="kw-name">shatavari powder uk</div>
+        <div class="kw-vol">~300</div>
+        <div class="kw-diff diff-low">LOW</div>
+        <div><span class="pill pill-transact" style="font-size:9px;">BUY</span></div>
+      </div>
+      <div class="kw-row">
+        <div class="kw-name">ayurvedic copper mug</div>
+        <div class="kw-vol">~200</div>
+        <div class="kw-diff diff-low">LOW</div>
+        <div><span class="pill pill-transact" style="font-size:9px;">BUY</span></div>
+      </div>
+      <div class="kw-row">
+        <div class="kw-name">ayurvedic supplements uk</div>
+        <div class="kw-vol">~600</div>
+        <div class="kw-diff diff-med">MED</div>
+        <div><span class="pill pill-product" style="font-size:9px;">CATEGORY</span></div>
+      </div>
+    </div>
+
+    <div class="kw-block">
+      <div class="kw-block-header">
+        📖 Informational — Blog Content
+        <span class="tag">EDITORIAL INTENT</span>
+      </div>
+      <div class="kw-row" style="background:var(--warm-mid); font-weight:600; font-size:11px;">
+        <div>Keyword</div><div>Vol/Mo</div><div>Diff</div><div>Intent</div>
+      </div>
+      <div class="kw-row">
+        <div class="kw-name">shilajit benefits</div>
+        <div class="kw-vol">27,100</div>
+        <div class="kw-diff diff-med">31</div>
+        <div><span class="pill pill-inform" style="font-size:9px;">INFO</span></div>
+      </div>
+      <div class="kw-row">
+        <div class="kw-name">ashwagandha benefits</div>
+        <div class="kw-vol">49,500</div>
+        <div class="kw-diff diff-med">47</div>
+        <div><span class="pill pill-inform" style="font-size:9px;">INFO</span></div>
+      </div>
+      <div class="kw-row">
+        <div class="kw-name">ashwagandha benefits for women</div>
+        <div class="kw-vol">12,100</div>
+        <div class="kw-diff diff-low">18</div>
+        <div><span class="pill pill-inform" style="font-size:9px;">INFO</span></div>
+      </div>
+      <div class="kw-row">
+        <div class="kw-name">moringa benefits</div>
+        <div class="kw-vol">22,200</div>
+        <div class="kw-diff diff-med">43</div>
+        <div><span class="pill pill-inform" style="font-size:9px;">INFO</span></div>
+      </div>
+      <div class="kw-row">
+        <div class="kw-name">moringa powder benefits</div>
+        <div class="kw-vol">~8,000</div>
+        <div class="kw-diff diff-med">MED</div>
+        <div><span class="pill pill-inform" style="font-size:9px;">INFO</span></div>
+      </div>
+      <div class="kw-row">
+        <div class="kw-name">shatavari benefits</div>
+        <div class="kw-vol">~3,500</div>
+        <div class="kw-diff diff-low">LOW</div>
+        <div><span class="pill pill-inform" style="font-size:9px;">INFO</span></div>
+      </div>
+      <div class="kw-row">
+        <div class="kw-name">is shilajit legal in uk</div>
+        <div class="kw-vol">140</div>
+        <div class="kw-diff diff-low">LOW</div>
+        <div><span class="pill pill-inform" style="font-size:9px;">FAQ</span></div>
+      </div>
+      <div class="kw-row">
+        <div class="kw-name">shilajit for men</div>
+        <div class="kw-vol">~2,000</div>
+        <div class="kw-diff diff-low">LOW</div>
+        <div><span class="pill pill-inform" style="font-size:9px;">INFO</span></div>
+      </div>
+      <div class="kw-row">
+        <div class="kw-name">what is ayurvedic medicine</div>
+        <div class="kw-vol">~3,000</div>
+        <div class="kw-diff diff-low">LOW</div>
+        <div><span class="pill pill-inform" style="font-size:9px;">EDITORIAL</span></div>
+      </div>
+      <div class="kw-row">
+        <div class="kw-name">adaptogens for stress uk</div>
+        <div class="kw-vol">~1,200</div>
+        <div class="kw-diff diff-low">LOW</div>
+        <div><span class="pill pill-inform" style="font-size:9px;">INFO</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="findings" style="margin-top:16px;">
+    <div class="finding warning">
+      <div class="finding-header">
+        <div class="finding-dot"></div>
+        <div class="finding-title">Keyword Opportunity: "Ashwagandha" Has 165,000 Monthly UK Searches — Massive Untapped Potential</div>
+        <div class="finding-priority">HIGH OPPORTUNITY</div>
+      </div>
+      <div class="finding-body">
+        <p>The head term "ashwagandha" has <strong>165,000 monthly UK searches</strong> with Keyword Difficulty 22 — unusually low for this volume. This presents a significant content opportunity. However, this term will require substantial domain authority and a dedicated, comprehensive piece of content (2,000+ words) to compete. The sub-terms "ashwagandha benefits" (49,500/mo, KD 47) and "ashwagandha benefits for women" (12,100/mo, KD 18) are the immediate priorities.</p>
+        <div class="rec">
+          <strong>Strategy</strong>
+          Create a cornerstone article "Complete Guide to Ashwagandha: Benefits, Dosage & Uses" (2,500+ words) targeting the 49,500/mo term, with internal links to the product page. Over time this becomes the key organic traffic driver for the Ashwagandha product.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════ 5. NEW PAGES TO CREATE ══════════════════════ -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-num">05</div>
+    <div>
+      <div class="section-title">Keyword Gaps & <em>New Pages</em></div>
+    </div>
+  </div>
+  <p class="section-intro">These are the highest-priority new pages Solvara should create, based on keyword gap analysis. Divided into bottom-of-funnel commercial pages and top-of-funnel informational content.</p>
+
+  <div class="gap-grid">
+
+    <div class="gap-card">
+      <div class="gap-card-type product">🛍 PRODUCT / COLLECTION PAGE</div>
+      <h4>Ayurvedic Supplements Collection Page</h4>
+      <div class="url">/collections/ayurvedic-supplements-uk</div>
+      <p style="font-size:12.5px; color:var(--text-muted); margin-bottom:10px;">A category landing page targeting the cluster of "ayurvedic supplements UK", "ayurvedic herbs UK", "adaptogen supplements UK". Currently no such page exists.</p>
+      <div class="kws">
+        <span class="kw-tag">ayurvedic supplements uk <span class="vol-tag">~600/mo</span></span>
+        <span class="kw-tag">ayurvedic herbs uk <span class="vol-tag">~400/mo</span></span>
+        <span class="kw-tag">adaptogens uk <span class="vol-tag">~800/mo</span></span>
+      </div>
+    </div>
+
+    <div class="gap-card">
+      <div class="gap-card-type product">🛍 PRODUCT / COLLECTION PAGE</div>
+      <h4>Women's Wellness Collection Page</h4>
+      <div class="url">/collections/womens-wellness-supplements</div>
+      <p style="font-size:12.5px; color:var(--text-muted); margin-bottom:10px;">Shatavari is the premier Ayurvedic herb for women's hormonal health. A dedicated women's wellness collection featuring Shatavari + Ashwagandha can capture significant search volume.</p>
+      <div class="kws">
+        <span class="kw-tag">shatavari for women <span class="vol-tag">~500/mo</span></span>
+        <span class="kw-tag">ashwagandha for women uk <span class="vol-tag">~700/mo</span></span>
+        <span class="kw-tag">women's herbal supplements uk <span class="vol-tag">~300/mo</span></span>
+      </div>
+    </div>
+
+    <div class="gap-card">
+      <div class="gap-card-type product">🛍 PRODUCT / COLLECTION PAGE</div>
+      <h4>Shilajit Bundles / "Solvara Essentials" Landing Page</h4>
+      <div class="url">/collections/shilajit-bundles</div>
+      <p style="font-size:12.5px; color:var(--text-muted); margin-bottom:10px;">The "Solvara Essentials" bundle product exists but has no dedicated SEO landing page. A dedicated bundles/starter kits page targets high-AOV commercial queries.</p>
+      <div class="kws">
+        <span class="kw-tag">shilajit starter kit uk <span class="vol-tag">~100/mo</span></span>
+        <span class="kw-tag">shilajit bundle uk <span class="vol-tag">~150/mo</span></span>
+        <span class="kw-tag">ayurvedic starter kit <span class="vol-tag">~200/mo</span></span>
+      </div>
+    </div>
+
+    <div class="gap-card">
+      <div class="gap-card-type blog">📖 INFORMATIONAL BLOG — HIGH PRIORITY</div>
+      <h4>"Shilajit Benefits: The Complete Guide for UK Buyers"</h4>
+      <div class="url">/blogs/wellness/shilajit-benefits</div>
+      <p style="font-size:12.5px; color:var(--text-muted); margin-bottom:10px;">27,100 searches/month. KD 31. This is the single highest-ROI blog article to write first. Answers the research phase before purchase. Strong internal link to product page.</p>
+      <div class="kws">
+        <span class="kw-tag">shilajit benefits <span class="vol-tag">27,100/mo</span></span>
+        <span class="kw-tag">shilajit for men <span class="vol-tag">~2,000/mo</span></span>
+        <span class="kw-tag">shilajit side effects <span class="vol-tag">~4,000/mo</span></span>
+        <span class="kw-tag">is shilajit legal in uk <span class="vol-tag">140/mo</span></span>
+      </div>
+    </div>
+
+    <div class="gap-card">
+      <div class="gap-card-type blog">📖 INFORMATIONAL BLOG — HIGH PRIORITY</div>
+      <h4>"Ashwagandha Benefits: Everything You Need to Know"</h4>
+      <div class="url">/blogs/wellness/ashwagandha-benefits</div>
+      <p style="font-size:12.5px; color:var(--text-muted); margin-bottom:10px;">49,500 searches/month. This is likely the single highest-traffic article Solvara can eventually rank for. Requires depth (2,500+ words), citations to studies, and strong internal linking.</p>
+      <div class="kws">
+        <span class="kw-tag">ashwagandha benefits <span class="vol-tag">49,500/mo</span></span>
+        <span class="kw-tag">ashwagandha benefits for women <span class="vol-tag">12,100/mo</span></span>
+        <span class="kw-tag">ashwagandha dosage <span class="vol-tag">~8,000/mo</span></span>
+      </div>
+    </div>
+
+    <div class="gap-card">
+      <div class="gap-card-type blog">📖 INFORMATIONAL BLOG</div>
+      <h4>"Moringa Benefits: Why This Superfood Belongs in Your Routine"</h4>
+      <div class="url">/blogs/wellness/moringa-benefits</div>
+      <p style="font-size:12.5px; color:var(--text-muted); margin-bottom:10px;">22,200 searches/month, KD 43. Informational intent with commercial cross-sell. Strong opportunity to rank and convert readers to Moringa Leaf Powder buyers.</p>
+      <div class="kws">
+        <span class="kw-tag">moringa benefits <span class="vol-tag">22,200/mo</span></span>
+        <span class="kw-tag">moringa powder benefits <span class="vol-tag">~8,000/mo</span></span>
+        <span class="kw-tag">moringa leaf powder uses <span class="vol-tag">~1,500/mo</span></span>
+      </div>
+    </div>
+
+    <div class="gap-card">
+      <div class="gap-card-type blog">📖 INFORMATIONAL BLOG</div>
+      <h4>"What Is Ayurvedic Medicine? A Beginner's Guide"</h4>
+      <div class="url">/blogs/wellness/what-is-ayurvedic-medicine</div>
+      <p style="font-size:12.5px; color:var(--text-muted); margin-bottom:10px;">Top-of-funnel brand awareness content. Builds topical authority for the Ayurvedic niche. Easy to rank for — low competition. Introduces Solvara's entire product range naturally.</p>
+      <div class="kws">
+        <span class="kw-tag">ayurvedic medicine <span class="vol-tag">~12,000/mo</span></span>
+        <span class="kw-tag">what is ayurveda <span class="vol-tag">~5,000/mo</span></span>
+        <span class="kw-tag">ayurvedic herbs benefits <span class="vol-tag">~2,500/mo</span></span>
+      </div>
+    </div>
+
+    <div class="gap-card">
+      <div class="gap-card-type blog">📖 INFORMATIONAL BLOG — QUICK WIN</div>
+      <h4>"Shatavari Benefits for Women: The Ayurvedic Hormone Herb"</h4>
+      <div class="url">/blogs/wellness/shatavari-benefits-women</div>
+      <p style="font-size:12.5px; color:var(--text-muted); margin-bottom:10px;">Very low competition, growing search interest. Shatavari is niche enough that a high-quality article could rank page 1 within 3–6 months even with limited domain authority.</p>
+      <div class="kws">
+        <span class="kw-tag">shatavari benefits <span class="vol-tag">~3,500/mo</span></span>
+        <span class="kw-tag">shatavari for women <span class="vol-tag">~500/mo</span></span>
+        <span class="kw-tag">shatavari root powder uk <span class="vol-tag">~300/mo</span></span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════ 6. CRO ══════════════════════ -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-num">06</div>
+    <div>
+      <div class="section-title">Conversion Rate <em>Optimisation</em></div>
+    </div>
+  </div>
+  <p class="section-intro">CRO analysis across four page types: Homepage, Collection/Category (currently absent), Product Page, and Blog template (currently absent). Visual mockups show recommended structural improvements.</p>
+
+  <!-- 6.1 HOMEPAGE CRO -->
+  <div class="cro-section">
+    <div class="cro-label">6.1 — Homepage CRO</div>
+
+    <div class="findings" style="margin-bottom:20px;">
+      <div class="finding critical">
+        <div class="finding-header">
+          <div class="finding-dot"></div>
+          <div class="finding-title">Hero Section: Video-Only with No Immediate Value Proposition or CTA Above the Fold</div>
+          <div class="finding-priority">HIGH IMPACT</div>
+        </div>
+        <div class="finding-body">
+          <p>The homepage hero is a full-screen video with no overlaid text CTA, no headline explaining what Solvara sells, and no "Shop Now" button. Visitors who land without brand awareness have no immediate direction. The brand tagline appears below the fold.</p>
+          <div class="rec">
+            <strong>Fix</strong>
+            Overlay the hero video with: (1) a short, punchy H1 e.g. "Ancient Botanicals. Modern Purity."; (2) a 1-line subheadline naming the product category; (3) dual CTAs: "Shop Shilajit" (primary) + "Explore All Botanicals" (secondary); (4) 3 trust badges below the fold line.
+          </div>
+        </div>
+      </div>
+      <div class="finding warning">
+        <div class="finding-header">
+          <div class="finding-dot"></div>
+          <div class="finding-title">No Trust Signals in First Viewport — Lab Certifications Are Buried</div>
+          <div class="finding-priority">MEDIUM IMPACT</div>
+        </div>
+        <div class="finding-body">
+          <p>Solvara's most powerful differentiator — third-party UK lab-tested certificates — is accessible only via the "Authenticity" menu. Trust signals like "Lab Certified", "UK Lab Tested", "Third-Party Verified" should appear within the first scroll on the homepage and on every product page.</p>
+          <div class="rec">
+            <strong>Fix</strong>
+            Add a thin trust bar immediately below the hero (or within it): "✓ UK Lab Certified  ✓ Third-Party Tested  ✓ Free UK Delivery over £59.99  ✓ Himalayan Sourced". This bar is visible on the recommended wireframe below.
+          </div>
+        </div>
+      </div>
+      <div class="finding warning">
+        <div class="finding-header">
+          <div class="finding-dot"></div>
+          <div class="finding-title">No Reviews / Social Proof on Homepage</div>
+          <div class="finding-priority">MEDIUM IMPACT</div>
+        </div>
+        <div class="finding-body">
+          <p>There is a <code>/pages/our-customers</code> page but no testimonials, star ratings, or review counts visible on the homepage or product pages. In the supplement category, social proof is one of the top conversion drivers.</p>
+          <div class="rec">
+            <strong>Fix</strong>
+            Add a reviews carousel section to the homepage using Shopify's native reviews app or Judge.me. Display star rating averages on product cards. Minimum target: 10 verified reviews per product before active SEO push.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="wireframe">
+      <div class="wf-navbar">
+        <div class="wf-logo">Solvara</div>
+        <div class="wf-nav">
+          <span>Home</span><span>Our Story</span><span>Shop</span><span>Consultation</span><span>Lab Results</span>
+        </div>
+        <div class="wf-cta-nav">Shop Now</div>
+      </div>
+
+      <div class="wf-hero">
+        <div class="wf-hero-text">
+          <h2>Ancient Botanicals.<br>Modern Purity.</h2>
+          <p>Premium Ayurvedic supplements sourced from the Himalayan highlands. UK lab-tested, third-party certified, and delivered to your door.</p>
+          <div class="wf-hero-btns">
+            <div class="wf-btn-primary">Shop Shilajit →</div>
+            <div class="wf-btn-secondary">All Botanicals</div>
+          </div>
+          <div class="wf-hero-trust">
+            <div class="wf-trust-item"><span class="wf-trust-icon">✓</span> Lab Certified</div>
+            <div class="wf-trust-item"><span class="wf-trust-icon">✓</span> UK Tested</div>
+            <div class="wf-trust-item"><span class="wf-trust-icon">✓</span> Himalayan Sourced</div>
+          </div>
+        </div>
+        <div class="wf-hero-img">Hero Video / Image</div>
+      </div>
+
+      <div class="wf-strip">
+        <span>Free Shipping Over £59.99</span>
+        <span>UK Lab Certified Batches</span>
+        <span>Ethically Sourced</span>
+        <span>30-Day Satisfaction</span>
+      </div>
+
+      <div class="wf-products">
+        <div class="wf-section-title">Featured Botanicals</div>
+        <div class="wf-section-sub">Our most loved products — crafted with Himalayan integrity</div>
+        <div class="wf-product-grid">
+          <div class="wf-product-card">
+            <div class="wf-product-img">Product Image</div>
+            <div class="wf-product-body">
+              <div class="wf-product-name">Pure Shilajit Resin</div>
+              <div class="wf-product-rating">★★★★★ <span style="color:var(--text-muted)">(47 reviews)</span></div>
+              <div class="wf-product-price">From £59.99</div>
+              <div class="wf-add-btn">Shop Now</div>
+            </div>
+          </div>
+          <div class="wf-product-card">
+            <div class="wf-product-img">Product Image</div>
+            <div class="wf-product-body">
+              <div class="wf-product-name">Ashwagandha Root Powder</div>
+              <div class="wf-product-rating">★★★★★ <span style="color:var(--text-muted)">(31 reviews)</span></div>
+              <div class="wf-product-price">From £22.99</div>
+              <div class="wf-add-btn">Shop Now</div>
+            </div>
+          </div>
+          <div class="wf-product-card">
+            <div class="wf-product-img">Product Image</div>
+            <div class="wf-product-body">
+              <div class="wf-product-name">Moringa Leaf Powder</div>
+              <div class="wf-product-rating">★★★★☆ <span style="color:var(--text-muted)">(18 reviews)</span></div>
+              <div class="wf-product-price">From £22.99</div>
+              <div class="wf-add-btn">Shop Now</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:12px;">
+      <div class="wf-annotation green"><span class="arrow">↑</span> Added: Dual CTA + trust badges overlaid on hero. Trust bar strip. Reviews on product cards. "Shop Now" in nav.</div>
+      <div class="wf-annotation"><span class="arrow">→</span> Current issues: No H1, no hero CTA, no trust bar, no reviews visible.</div>
+    </div>
+  </div>
+
+  <!-- 6.2 PRODUCT PAGE CRO -->
+  <div class="divider"></div>
+  <div class="cro-section">
+    <div class="cro-label">6.2 — Product Page CRO</div>
+
+    <div class="findings" style="margin-bottom:20px;">
+      <div class="finding critical">
+        <div class="finding-header">
+          <div class="finding-dot"></div>
+          <div class="finding-title">No Reviews / Star Ratings on Product Pages — #1 Conversion Killer</div>
+          <div class="finding-priority">HIGH IMPACT</div>
+        </div>
+        <div class="finding-body">
+          <p>There are zero reviews displayed on any product page. No star ratings, no customer quotes, no review count. For a supplement brand, this is the single biggest conversion barrier — customers need social proof before purchasing health products.</p>
+          <div class="rec">
+            <strong>Fix</strong>
+            Install Judge.me (free Shopify app), email existing customers for reviews, and display star rating in the product header within 1 week. Target 20+ reviews per top-selling product.
+          </div>
+        </div>
+      </div>
+      <div class="finding critical">
+        <div class="finding-header">
+          <div class="finding-dot"></div>
+          <div class="finding-title">No Urgency, Scarcity, or Risk-Reversal Elements</div>
+          <div class="finding-priority">HIGH IMPACT</div>
+        </div>
+        <div class="finding-body">
+          <p>The Shilajit product page ATC button is functional but surrounded by zero conversion-boosting elements: no "In Stock", no satisfaction guarantee badge, no free delivery callout near the button, no "X units sold" social proof.</p>
+          <div class="rec">
+            <strong>Fix</strong>
+            Add immediately below the ATC button: (1) a green lock-up "🔒 30-Day Satisfaction Guarantee"; (2) "✓ In Stock — Dispatched within 24hrs"; (3) "🚚 Free UK delivery on orders over £59.99".
+          </div>
+        </div>
+      </div>
+      <div class="finding warning">
+        <div class="finding-header">
+          <div class="finding-dot"></div>
+          <div class="finding-title">No Subscription / Subscribe & Save Option Visible</div>
+          <div class="finding-priority">MEDIUM IMPACT</div>
+        </div>
+        <div class="finding-body">
+          <p>The page code references a "deferred, subscription, or recurring purchase" but there is no visible subscription pricing option in the product page UI. Shilajit is a daily supplement — subscription revenue is critical for LTV and should be prominently offered (e.g., "Subscribe & Save 15%").</p>
+          <div class="rec">
+            <strong>Fix</strong>
+            Add a one-time vs subscribe toggle above the Add to Cart button using Shopify's native subscription features or Recharge. Show the price saving clearly. This is a major AOV and LTV lever.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="wireframe">
+      <div class="wf-pdp">
+        <div class="wf-pdp-images">
+          <div class="wf-pdp-main-img">Product Image</div>
+          <div class="wf-pdp-thumbs">
+            <div class="wf-pdp-thumb"></div>
+            <div class="wf-pdp-thumb"></div>
+            <div class="wf-pdp-thumb"></div>
+          </div>
+        </div>
+        <div class="wf-pdp-info">
+          <div class="wf-pdp-breadcrumb">Home / Shop / Shilajit</div>
+          <div class="wf-pdp-badge">⭐ Gold Grade · Lab Certified</div>
+          <div class="wf-pdp-h1">Pure Himalayan Shilajit Resin — Gold Grade</div>
+          <div class="wf-pdp-rating">★★★★★ <span>4.9 (47 reviews)</span></div>
+          <div class="wf-pdp-price">From £59.99</div>
+          <div class="wf-pdp-save">Subscribe & Save 15% → £50.99/mo</div>
+          <div class="wf-pdp-variants">
+            <div class="wf-variant">One-Time</div>
+            <div class="wf-variant active">Subscribe & Save</div>
+          </div>
+          <div style="font-size:11px; color:var(--text-muted); margin-bottom:14px;">Supply Size:</div>
+          <div class="wf-pdp-variants">
+            <div class="wf-variant active">1 Month</div>
+            <div class="wf-variant">2 Months</div>
+            <div class="wf-variant">3 Months</div>
+          </div>
+          <div style="height:12px;"></div>
+          <div class="wf-pdp-cta">Add to Cart — £59.99</div>
+          <div class="wf-pdp-secondary">Buy with Shop Pay</div>
+          <div class="wf-pdp-guarantee">🔒 30-Day Satisfaction Guarantee · Cancel anytime</div>
+          <div class="wf-pdp-trust">
+            <span>✓ In Stock</span>
+            <span>✓ Free UK Delivery £59.99+</span>
+            <span>✓ UK Lab Tested</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:12px;">
+      <div class="wf-annotation green"><span class="arrow">↑</span> Added: Star ratings, breadcrumb, subscribe & save toggle, guarantee badge, inline trust signals, save callout.</div>
+      <div class="wf-annotation"><span class="arrow">→</span> Current issues: No reviews, no subscribe option visible, no guarantee, no trust signals near CTA.</div>
+    </div>
+  </div>
+
+  <!-- 6.3 BLOG TEMPLATE -->
+  <div class="divider"></div>
+  <div class="cro-section">
+    <div class="cro-label">6.3 — Blog Content Template CRO</div>
+    <div class="findings">
+      <div class="finding warning">
+        <div class="finding-header">
+          <div class="finding-dot"></div>
+          <div class="finding-title">Blog Template Does Not Yet Exist — Build With Conversion in Mind From Day One</div>
+          <div class="finding-priority">PLAN AHEAD</div>
+        </div>
+        <div class="finding-body">
+          <p>When the blog is created, every article should be built as a conversion funnel, not just informational content. Recommended structure for each article:</p>
+          <div class="rec">
+            <strong>Blog Article CRO Template</strong><br>
+            1. <strong>Sticky sidebar or inline product callout</strong> — "Solvara Ashwagandha Root Powder: Ethically sourced from Uttarakhand → Shop Now" (with product image + price)<br>
+            2. <strong>Mid-article CTA block</strong> — After the main benefits section, insert a highlighted CTA box: "Ready to try ashwagandha? Solvara's root powder is UK lab-tested…"<br>
+            3. <strong>Exit-intent email capture</strong> — Offer a "Beginner's Guide to Adaptogens" PDF in exchange for email<br>
+            4. <strong>Related products footer</strong> — "Products mentioned in this article"<br>
+            5. <strong>Author bio with credentials</strong> — E-E-A-T signal for Google; include "reviewed by" if possible
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════ 7. PRIORITY ROADMAP ══════════════════════ -->
+<div class="section" style="background: var(--ink); color: var(--paper);">
+  <div class="section-header">
+    <div class="section-num" style="color:var(--gold);">07</div>
+    <div>
+      <div class="section-title" style="color:var(--paper);">Priority <em>Roadmap</em></div>
+    </div>
+  </div>
+  <p style="font-size:15px; color:rgba(247,243,238,0.6); max-width:700px; margin-bottom:32px; line-height:1.7;">Ordered by impact-to-effort ratio. Items 1–5 should be completed within 30 days. Items 6–10 within 90 days.</p>
+
+  <div class="priority-list">
+    <div class="priority-item" style="background:rgba(255,255,255,0.06); border-color:rgba(200,169,110,0.2);">
+      <div class="priority-num">1</div>
+      <div class="priority-content">
+        <h4 style="color:var(--paper);">Fix Homepage H1, Title Tag & Meta Descriptions Across All Product Pages</h4>
+        <p style="color:rgba(247,243,238,0.5);">Zero-effort, maximum impact. 1 hour of Shopify theme edits.</p>
+      </div>
+      <div class="priority-impact impact-high">CRITICAL / 1 DAY</div>
+    </div>
+    <div class="priority-item" style="background:rgba(255,255,255,0.06); border-color:rgba(200,169,110,0.2);">
+      <div class="priority-num">2</div>
+      <div class="priority-content">
+        <h4 style="color:var(--paper);">Install Reviews App (Judge.me) & Collect First 20 Reviews Per Product</h4>
+        <p style="color:rgba(247,243,238,0.5);">Directly unlocks social proof for CRO and enables star ratings in search snippets (schema).</p>
+      </div>
+      <div class="priority-impact impact-high">HIGH / 1 WEEK</div>
+    </div>
+    <div class="priority-item" style="background:rgba(255,255,255,0.06); border-color:rgba(200,169,110,0.2);">
+      <div class="priority-num">3</div>
+      <div class="priority-content">
+        <h4 style="color:var(--paper);">Replace Placeholder FAQ Accordion Content with Keyword-Rich Real FAQs</h4>
+        <p style="color:rgba(247,243,238,0.5);">Addresses the "Use this text to answer questions…" placeholder issue. Adds content + enables FAQ rich results.</p>
+      </div>
+      <div class="priority-impact impact-high">HIGH / 2 DAYS</div>
+    </div>
+    <div class="priority-item" style="background:rgba(255,255,255,0.06); border-color:rgba(200,169,110,0.2);">
+      <div class="priority-num">4</div>
+      <div class="priority-content">
+        <h4 style="color:var(--paper);">Compress Homepage Hero Video from 16.9 MB to Under 3 MB</h4>
+        <p style="color:rgba(247,243,238,0.5);">Critical for mobile performance. Use HandBrake or Cloudflare Stream.</p>
+      </div>
+      <div class="priority-impact impact-high">HIGH / 1 DAY</div>
+    </div>
+    <div class="priority-item" style="background:rgba(255,255,255,0.06); border-color:rgba(200,169,110,0.2);">
+      <div class="priority-num">5</div>
+      <div class="priority-content">
+        <h4 style="color:var(--paper);">Add Product Schema + FAQ Schema JSON-LD to All Product Pages</h4>
+        <p style="color:rgba(247,243,238,0.5);">Enables star ratings and FAQ rich results in Google SERPs — direct CTR impact.</p>
+      </div>
+      <div class="priority-impact impact-high">HIGH / 3 DAYS</div>
+    </div>
+    <div class="priority-item" style="background:rgba(255,255,255,0.06); border-color:rgba(200,169,110,0.2);">
+      <div class="priority-num">6</div>
+      <div class="priority-content">
+        <h4 style="color:var(--paper);">Create Shopify Collections: Ayurvedic Supplements, Women's Wellness, Adaptogens</h4>
+        <p style="color:rgba(247,243,238,0.5);">Category pages enable ranking for high-volume commercial terms product pages cannot target.</p>
+      </div>
+      <div class="priority-impact impact-med">MEDIUM / 1 WEEK</div>
+    </div>
+    <div class="priority-item" style="background:rgba(255,255,255,0.06); border-color:rgba(200,169,110,0.2);">
+      <div class="priority-num">7</div>
+      <div class="priority-content">
+        <h4 style="color:var(--paper);">Launch Blog: First Article — "Shilajit Benefits: The Complete UK Guide"</h4>
+        <p style="color:rgba(247,243,238,0.5);">27,100 searches/month, KD 31. Highest-ROI content piece for early organic traffic.</p>
+      </div>
+      <div class="priority-impact impact-med">HIGH / 2 WEEKS</div>
+    </div>
+    <div class="priority-item" style="background:rgba(255,255,255,0.06); border-color:rgba(200,169,110,0.2);">
+      <div class="priority-num">8</div>
+      <div class="priority-content">
+        <h4 style="color:var(--paper);">Add Subscribe & Save Option to Shilajit Product Page</h4>
+        <p style="color:rgba(247,243,238,0.5);">Highest-AOV product should offer subscription. Direct LTV and recurring revenue impact.</p>
+      </div>
+      <div class="priority-impact impact-med">MEDIUM / 3 DAYS</div>
+    </div>
+    <div class="priority-item" style="background:rgba(255,255,255,0.06); border-color:rgba(200,169,110,0.2);">
+      <div class="priority-num">9</div>
+      <div class="priority-content">
+        <h4 style="color:var(--paper);">Digital PR Campaign: Pitch Lab-Testing Story to UK Wellness Publications</h4>
+        <p style="color:rgba(247,243,238,0.5);">The third-party lab testing differentiator is a genuine editorial hook. Target: 5 editorial backlinks in 90 days.</p>
+      </div>
+      <div class="priority-impact impact-high">HIGH / ONGOING</div>
+    </div>
+    <div class="priority-item" style="background:rgba(255,255,255,0.06); border-color:rgba(200,169,110,0.2);">
+      <div class="priority-num">10</div>
+      <div class="priority-content">
+        <h4 style="color:var(--paper);">Publish Ashwagandha Benefits Guide (2,500 words) with Internal Links to Product</h4>
+        <p style="color:rgba(247,243,238,0.5);">49,500 searches/month. The single highest-traffic content opportunity for Solvara long-term.</p>
+      </div>
+      <div class="priority-impact impact-med">HIGH / 3 WEEKS</div>
+    </div>
+  </div>
+
+  <div style="margin-top:48px; padding-top:32px; border-top:1px solid rgba(200,169,110,0.2); font-size:12px; color:rgba(247,243,238,0.35); font-family:'DM Mono', monospace;">
+    Audit prepared March 2026 · Data sourced via DataForSEO Labs, Google Ads Keyword API, Lighthouse v13.0.3 · Domain: solvara.co.uk
+  </div>
+</div>
+
+</body>
+</html>
